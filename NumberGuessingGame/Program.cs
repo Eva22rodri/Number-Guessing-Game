@@ -5,7 +5,7 @@ namespace NumberGuessingGame
 {
     class Program
     {
-        static int GetIntegerFromUser(string question) 
+        static int GetIntegerFromUser(string question)
         {
             int integerFromUser;
             bool success;
@@ -19,6 +19,22 @@ namespace NumberGuessingGame
 
             return integerFromUser;
         }
+
+        static void GiveUserARandomInsult(string[] availableInsults)
+        {
+            Random random = new Random();
+            int insultIndex = random.Next(0, availableInsults.Length);
+            string insult = availableInsults[insultIndex];
+            Console.WriteLine(insult);
+        }
+
+        static void RespondToIncorrectGuess(string [] insultsToBeUsed, string highLowHint) // parameters in () need to be supplied. ( string array and a string are needed)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(highLowHint);
+            GiveUserARandomInsult(insultsToBeUsed);
+        }
+
         static void Main(string[] args)
         {
             Console.WriteLine("Let's play a number guessing game!");
@@ -66,23 +82,13 @@ namespace NumberGuessingGame
                 {
                     if (guess > secretNumber)
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("You were too high, loser! Guess again..");
-                        score += 1;
-                        Random random = new Random();
-                        int insultIndex = random.Next(0, insults.Length); // this randomizes the index that will be used at whatever length(number of insults available)
-                        string insult = insults[insultIndex]; // the insult is a string and it is inside of the insults array at the insultIndex location.
-                        Console.WriteLine(insult);
+                        RespondToIncorrectGuess(insults, "You were too high, loser! Guess again.."); //() tell us to give parameters needed.
+                        score ++;
                     }
                     else if (guess < secretNumber)
                     {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("You were too low, loser! Guess again..");
-                        score += 1;
-                        Random random = new Random();
-                        int insultIndex = random.Next(0, insults.Length);
-                        string insult = insults[insultIndex];
-                        Console.WriteLine(insult);
+                        RespondToIncorrectGuess(insults, "You were too low, loser! Guess again..");
+                        score++;
                     }
                 }
             } while (guess != secretNumber);
@@ -91,8 +97,9 @@ namespace NumberGuessingGame
             Console.Beep(440, 250);
             Console.Beep(600, 250);
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine("You got it!");
+            Console.WriteLine("You got finally it!");
             Console.WriteLine("Your final score was " + score);
+            Console.WriteLine("Better luck next time");
 
         }
     }
