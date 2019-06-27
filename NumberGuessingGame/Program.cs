@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace NumberGuessingGame
 {
     class Program
     {
-        static int GetIntegerFromUser(string question) //Give a question and this method will do the following.
+        static int GetIntegerFromUser(string question) 
         {
             int integerFromUser;
             bool success;
@@ -12,7 +13,7 @@ namespace NumberGuessingGame
             {
                 Console.WriteLine(question);
                 string strMax = Console.ReadLine();
-                success = int.TryParse(strMax, out integerFromUser);
+                success = int.TryParse(strMax, out integerFromUser); // is always giving a bool..
             } while (success == false);
 
 
@@ -36,17 +37,30 @@ namespace NumberGuessingGame
                 Console.WriteLine("Your current score is " + score);
                 guess = GetIntegerFromUser("Please guess a number between 1 - " + max + ": ");
 
-                if (guess > secretNumber)
+                if (guess > max || guess < 1)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("You were too high, loser! Guess again..");
-                    score += 1;
+                    Console.WriteLine("Is guessing really that hard?");
+                    Console.WriteLine("Here's a tutorial that's about your competence level:");
+
+                    System.Threading.Thread.Sleep(4000);
+
+                    Process.Start(new ProcessStartInfo("cmd", $"/c start https://www.youtube.com/watch?v=ijoV8QrW5JM"));
+                    
                 }
-                else if (guess < secretNumber)
+                else
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("You were too low, loser! Guess again..");
-                    score += 1;
+                    if (guess > secretNumber)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("You were too high, loser! Guess again..");
+                        score += 1;
+                    }
+                    else if (guess < secretNumber)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("You were too low, loser! Guess again..");
+                        score += 1;
+                    }
                 }
             } while (guess != secretNumber);
 
